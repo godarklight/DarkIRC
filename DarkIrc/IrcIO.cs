@@ -16,6 +16,11 @@ namespace DarkIrc
             ircProtocol.SendMessage("PRIVMSG " + target + " :" + (char)1 + "ACTION " + message);
         }
 
+        public void SendCtcpMessage(string target, string message)
+        {
+            ircProtocol.SendMessage("PRIVMSG " + target + " :" + (char)1 + message);
+        }
+
         public void SendMessage(string target, string message)
         {
             ircProtocol.SendMessage("PRIVMSG " + target + " :" + message);

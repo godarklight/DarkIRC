@@ -16,11 +16,11 @@ namespace IrcTest
             ircC.IrcEvents.KickEvent += (channel, user) =>
             {
                 Console.WriteLine(user + " kicked from " + channel);
-                    if (user == "darkbot" && channel == "#DMP")
-                    {
-                        System.Threading.Thread.Sleep(1000);
-                        ircC.IrcIO.JoinChannel("#DMP");
-                    }
+                if (user == "darkbot" && channel == "#DMP")
+                {
+                    System.Threading.Thread.Sleep(1000);
+                    ircC.IrcIO.JoinChannel("#DMP");
+                }
             };
             ircC.IrcEvents.PartEvent += (channel, user) =>
             {
@@ -32,21 +32,29 @@ namespace IrcTest
                 ircC.Connect();
             };
             ircC.IrcEvents.ChannelMessageEvent += (channel, user, message) =>
-                {
-                    Console.WriteLine(channel + " <" + user + "> " + message);
-                };
+            {
+                Console.WriteLine(channel + " <" + user + "> " + message);
+            };
             ircC.IrcEvents.ChannelActionMessageEvent += (channel, user, message) =>
-                {
-                    Console.WriteLine(channel + " *" + user + " " + message);
-                };
+            {
+                Console.WriteLine(channel + " *" + user + " " + message);
+            };
+            ircC.IrcEvents.ChannelCtcpMessageEvent += (channel, user, message) =>
+            {
+                Console.WriteLine(channel + " CTCP " + user + " " + message);
+            };
             ircC.IrcEvents.PrivateMessageEvent += (user, message) =>
             {
                 Console.WriteLine("<" + user + "> " + message);
             };
             ircC.IrcEvents.PrivateActionMessageEvent += (user, message) =>
-                {
-                    Console.WriteLine("*" + user + " " + message);
-                };
+            {
+                Console.WriteLine("*" + user + " " + message);
+            };
+            ircC.IrcEvents.PrivateCtcpMessageEvent += (user, message) =>
+            {
+                Console.WriteLine("CTCP " + user + " " + message);
+            };
             ircC.Connect();
             System.Threading.Thread.Sleep(5000);
             ircC.IrcIO.JoinChannel("#DMP");
@@ -55,21 +63,28 @@ namespace IrcTest
             string currentChannel = "#kspmodders";
             while ((currentLine = Console.ReadLine()) != "QUIT")
             {
-                if (currentLine.StartsWith("/SWITCH "))
+                if (currentLine.ToUpper().StartsWith("/SWITCH "))
                 {
                     currentChannel = currentLine.Substring(currentLine.IndexOf(" ") + 1);
                 }
-                if (currentLine.StartsWith("/JOIN "))
+                if (currentLine.ToUpper().StartsWith("/JOIN "))
                 {
                     ircC.IrcIO.JoinChannel(currentLine.Substring(currentLine.IndexOf(" ") + 1));
                 }
-                if (currentLine.StartsWith("/PART "))
+                if (currentLine.ToUpper().StartsWith("/PART "))
                 {
                     ircC.IrcIO.PartChannel(currentLine.Substring(currentLine.IndexOf(" ") + 1));
                 }
                 if (currentLine.ToUpper().StartsWith("/ME "))
                 {
                     ircC.IrcIO.SendActionMessage(currentChannel, currentLine.Substring(currentLine.IndexOf(" ") + 1));
+                }
+                if (currentLine.ToUpper().StartsWith("/CTCP "))
+                {
+                    string target = currentLine.Substring(6);
+                    target = target.Substring(0, target.IndexOf(" "));
+                    string message = currentLine.Substring(7 + target.Length);
+                    ircC.IrcIO.SendCtcpMessage(target, message);
                 }
                 if (currentLine == "/DEBUG")
                 {

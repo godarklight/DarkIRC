@@ -18,10 +18,14 @@ namespace DarkIrc
         public event Action<string, string, string> ChannelMessageEvent;
         //Channel, User, message
         public event Action<string, string, string> ChannelActionMessageEvent;
+        //Channel, User, message
+        public event Action<string, string, string> ChannelCtcpMessageEvent;
         //User, message
         public event Action<string, string> PrivateMessageEvent;
         //User, message
         public event Action<string, string> PrivateActionMessageEvent;
+        //User, message
+        public event Action<string, string> PrivateCtcpMessageEvent;
         //Raw Message
         public event Action<string> RawMessageEvent;
 
@@ -97,6 +101,14 @@ namespace DarkIrc
             }
         }
 
+        internal void OnChannelCtcpMessage(string channel, string user, string message)
+        {
+            if (ChannelCtcpMessageEvent != null)
+            {
+                ChannelCtcpMessageEvent(channel, user, message);
+            }
+        }
+
         internal void OnPrivateMessage(string user, string message)
         {
             if (PrivateMessageEvent != null)
@@ -110,6 +122,14 @@ namespace DarkIrc
             if (PrivateActionMessageEvent != null)
             {
                 PrivateActionMessageEvent(user, message);
+            }
+        }
+
+        internal void OnPrivateCtcpMessage(string user, string message)
+        {
+            if (PrivateCtcpMessageEvent != null)
+            {
+                PrivateCtcpMessageEvent(user, message);
             }
         }
     }

@@ -1,6 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="IrcTest/Program.cs">
+    <Files>
+      <File FileName="DarkIrc/IrcEvents.cs" Line="56" Column="56" />
+      <File FileName="IrcTest/Program.cs" Line="59" Column="59" />
+      <File FileName="DarkIrc/IrcIO.cs" Line="73" Column="73" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
