@@ -32,13 +32,21 @@ namespace IrcTest
                 ircC.Connect();
             };
             ircC.IrcEvents.ChannelMessageEvent += (channel, user, message) =>
-            {
-                Console.WriteLine(channel + " <" + user + "> " + message);
-            };
+                {
+                    Console.WriteLine(channel + " <" + user + "> " + message);
+                };
+            ircC.IrcEvents.ChannelActionMessageEvent += (channel, user, message) =>
+                {
+                    Console.WriteLine(channel + " *" + user + " " + message);
+                };
             ircC.IrcEvents.PrivateMessageEvent += (user, message) =>
             {
                 Console.WriteLine("<" + user + "> " + message);
             };
+            ircC.IrcEvents.PrivateActionMessageEvent += (user, message) =>
+                {
+                    Console.WriteLine("*" + user + " " + message);
+                };
             ircC.Connect();
             System.Threading.Thread.Sleep(5000);
             ircC.IrcIO.JoinChannel("#DMP");
@@ -58,6 +66,10 @@ namespace IrcTest
                 if (currentLine.StartsWith("/PART "))
                 {
                     ircC.IrcIO.PartChannel(currentLine.Substring(currentLine.IndexOf(" ") + 1));
+                }
+                if (currentLine.ToUpper().StartsWith("/ME "))
+                {
+                    ircC.IrcIO.SendActionMessage(currentChannel, currentLine.Substring(currentLine.IndexOf(" ") + 1));
                 }
                 if (currentLine == "/DEBUG")
                 {

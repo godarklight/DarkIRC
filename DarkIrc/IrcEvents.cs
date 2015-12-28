@@ -16,8 +16,12 @@ namespace DarkIrc
         public event Action<string, string> PartEvent;
         //Channel, User, message
         public event Action<string, string, string> ChannelMessageEvent;
+        //Channel, User, message
+        public event Action<string, string, string> ChannelActionMessageEvent;
         //User, message
         public event Action<string, string> PrivateMessageEvent;
+        //User, message
+        public event Action<string, string> PrivateActionMessageEvent;
         //Raw Message
         public event Action<string> RawMessageEvent;
 
@@ -85,11 +89,27 @@ namespace DarkIrc
             }
         }
 
+        internal void OnChannelActionMessage(string channel, string user, string message)
+        {
+            if (ChannelActionMessageEvent != null)
+            {
+                ChannelActionMessageEvent(channel, user, message);
+            }
+        }
+
         internal void OnPrivateMessage(string user, string message)
         {
             if (PrivateMessageEvent != null)
             {
                 PrivateMessageEvent(user, message);
+            }
+        }
+
+        internal void OnPrivateActionMessage(string user, string message)
+        {
+            if (PrivateActionMessageEvent != null)
+            {
+                PrivateActionMessageEvent(user, message);
             }
         }
     }
